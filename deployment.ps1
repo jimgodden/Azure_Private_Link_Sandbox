@@ -20,15 +20,15 @@ Set-AzContext -Subscription $subID
 
 
 $rgName = "Bicep_Private_Link_Sandbox"
-$srcLocation = "eastus2"
-$dstLocation = "eastus2"
+$locationA = "eastus2"
+# $locationB = "eastus2"
 
 Write-Host "Creating ${rgName}"
-New-AzResourceGroup -Name $rgName -Location $srcLocation
+New-AzResourceGroup -Name $rgName -Location $locationA
 
 Write-Host "`nStarting Bicep Deployment.."
 New-AzResourceGroupDeployment -ResourceGroupName $rgName -TemplateFile $mainBicepFile -TemplateParameterFile $mainParameterFile `
-    -srcLocation $srcLocation -dstLocation $dstLocation
+    -locationA $srcLocation # -dstLocation $dstLocation
 
 $end = get-date -UFormat "%s"
 $timeTotalSeconds = $end - $start

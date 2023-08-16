@@ -1,13 +1,14 @@
 @description('Azure Datacenter that the resource is deployed to')
 param location string
 
+@description('Name of the Virtual Network that the Private Endpoint will be deployed to.')
 param privateEndpointVnetName string
 
 param privateDNSZoneLinkedVnetNamesList array
 
 param privateDNSZoneLinkedVnetIDList array
 
-param subnetID string
+param privateEndpointSubnetID string
 
 @description('''
 Storage account name restrictions:
@@ -19,14 +20,6 @@ Storage account name restrictions:
 param storageAccount_Name string
 
 param usingBlobPrivateEndpoints bool = true
-param usingFilePrivateEndpoints bool = true
-
-
-// @description('''
-// Group ID of the resource the Private Endpoint connects to.
-//  - Example: Blob Storage for storage account would be 'blob'
-// ''')
-// param groupID string = 'blob'
 
 param privateEndpoints_Blob_Name string
 
@@ -41,7 +34,6 @@ var blobFQDN = take(blobEndpointNoHTTPS, length(blobEndpointNoHTTPS) - 1)
 
 
 var privateDNSZone_Blob_Name = 'privatelink.blob.core.windows.net'
-var privateDNSZone_File_Name = 'privatelink.file.core.windows.net'
 
 
 
@@ -50,7 +42,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   location: location
   sku: {
     name: 'Standard_LRS'
-    // tier: 'Standard'
   }
   kind: 'StorageV2'
   properties: {
@@ -129,15 +120,12 @@ resource privateEndpoints_Blob 'Microsoft.Network/privateEndpoints@2023-04-01' =
     ]
     manualPrivateLinkServiceConnections: []
     subnet: {
-      id: subnetID
+      id: privateEndpointSubnetID
     }
     ipConfigurations: []
     customDnsConfigs: [
       {
-        fqdn: blobFQDN //'biceptestsajames.blob.core.windows.net'
-        // ipAddresses: [
-        //   '10.0.0.4'
-        // ]
+        fqdn: blobFQDN
       }
     ]
   }
@@ -174,70 +162,3 @@ resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
     }
   }
 }]
-
-// resource privateDNSZoneRecord_StorageAccount_Blob 'Microsoft.Network/privateDnsZones/A@2018-09-01' = {
-//   parent: privateDNSZone_StorageAccount_Blob
-//   name: 'biceptestsajames'
-//   properties: {
-//     ttl: 3600
-//     aRecords: [
-//       {
-//         ipv4Address: '10.0.0.4'
-//       }
-//     ]
-//   }
-// }
-
-// resource Microsoft_Network_privateDnsZones_SOA_privateDnsZones_privatelink_blob_core_windows_net_name 'Microsoft.Network/privateDnsZones/SOA@2018-09-01' = {
-//   parent: privateDNSZone_StorageAccount_Blob
-//   name: '@'
-//   properties: {
-//     ttl: 3600
-//     soaRecord: {
-//       email: 'azureprivatedns-host.microsoft.com'
-//       expireTime: 2419200
-//       host: 'azureprivatedns.net'
-//       minimumTtl: 10
-//       refreshTime: 3600
-//       retryTime: 300
-//       serialNumber: 1
-//     }
-//   }
-// }
-
-// resource Microsoft_Storage_storageAccounts_fileServices_storageAccount_Name_default 'Microsoft.Storage/storageAccounts/fileServices@2023-01-01' = {
-//   parent: storageAccount
-//   name: 'default'
-//   properties: {
-//     protocolSettings: {
-//       smb: {}
-//     }
-//     cors: {
-//       corsRules: []
-//     }
-//     shareDeleteRetentionPolicy: {
-//       enabled: true
-//       days: 7
-//     }
-//   }
-// }
-
-// resource Microsoft_Storage_storageAccounts_queueServices_storageAccount_Name_default 'Microsoft.Storage/storageAccounts/queueServices@2023-01-01' = {
-//   parent: storageAccount
-//   name: 'default'
-//   properties: {
-//     cors: {
-//       corsRules: []
-//     }
-//   }
-// }
-
-// resource Microsoft_Storage_storageAccounts_tableServices_storageAccount_Name_default 'Microsoft.Storage/storageAccounts/tableServices@2023-01-01' = {
-//   parent: storageAccount
-//   name: 'default'
-//   properties: {
-//     cors: {
-//       corsRules: []
-//     }
-//   }
-// }

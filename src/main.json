@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "11066708650144871945"
+      "templateHash": "5802512973086426310"
     }
   },
   "parameters": {
@@ -1805,7 +1805,7 @@
           "storageAccount_Name": {
             "value": "[parameters('storageAccount_Name')]"
           },
-          "subnetID": {
+          "privateEndpointSubnetID": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeAVNET'), '2022-09-01').outputs.privateEndpointSubnetID.value]"
           },
           "privateDNSZoneLinkedVnetIDList": {
@@ -1833,7 +1833,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "10656498720244262616"
+              "templateHash": "13215889794683877641"
             }
           },
           "parameters": {
@@ -1844,7 +1844,10 @@
               }
             },
             "privateEndpointVnetName": {
-              "type": "string"
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Virtual Network that the Private Endpoint will be deployed to."
+              }
             },
             "privateDNSZoneLinkedVnetNamesList": {
               "type": "array"
@@ -1852,7 +1855,7 @@
             "privateDNSZoneLinkedVnetIDList": {
               "type": "array"
             },
-            "subnetID": {
+            "privateEndpointSubnetID": {
               "type": "string"
             },
             "storageAccount_Name": {
@@ -1867,17 +1870,12 @@
               "type": "bool",
               "defaultValue": true
             },
-            "usingFilePrivateEndpoints": {
-              "type": "bool",
-              "defaultValue": true
-            },
             "privateEndpoints_Blob_Name": {
               "type": "string"
             }
           },
           "variables": {
-            "privateDNSZone_Blob_Name": "privatelink.blob.core.windows.net",
-            "privateDNSZone_File_Name": "privatelink.file.core.windows.net"
+            "privateDNSZone_Blob_Name": "privatelink.blob.core.windows.net"
           },
           "resources": [
             {
@@ -1970,7 +1968,7 @@
                 ],
                 "manualPrivateLinkServiceConnections": [],
                 "subnet": {
-                  "id": "[parameters('subnetID')]"
+                  "id": "[parameters('privateEndpointSubnetID')]"
                 },
                 "ipConfigurations": [],
                 "customDnsConfigs": [

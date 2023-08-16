@@ -133,7 +133,7 @@ module storageAccount 'modules/StorageAccount.bicep' = {
     location: locationA
     privateEndpoints_Blob_Name: '${storageAccount_Name}blob_pe'
     storageAccount_Name: storageAccount_Name
-    subnetID: spokeAVNET.outputs.privateEndpointSubnetID
+    privateEndpointSubnetID: spokeAVNET.outputs.privateEndpointSubnetID
     privateDNSZoneLinkedVnetIDList: [hubVNET.outputs.vnetID, spokeAVNET.outputs.vnetID, spokeBVNET.outputs.vnetID]
     privateDNSZoneLinkedVnetNamesList: [hubVNET.outputs.vnetName, spokeAVNET.outputs.vnetName, spokeBVNET.outputs.vnetName]
     privateEndpointVnetName: spokeAVNET.outputs.vnetName
