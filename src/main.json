@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "18298688742740897173"
+      "templateHash": "16971918041597227882"
     }
   },
   "parameters": {
@@ -2062,7 +2062,7 @@
             "value": "[parameters('locationA')]"
           },
           "privateEndpoints_Blob_Name": {
-            "value": "[format('{0}blob_pe', parameters('storageAccount_Name'))]"
+            "value": "[format('{0}_blob_pe', parameters('storageAccount_Name'))]"
           },
           "storageAccount_Name": {
             "value": "[parameters('storageAccount_Name')]"
@@ -2293,8 +2293,11 @@
         }
       },
       "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'hubVMWindows')]",
         "[resourceId('Microsoft.Resources/deployments', 'hubVNET')]",
+        "[resourceId('Microsoft.Resources/deployments', 'spokeAVMWindows')]",
         "[resourceId('Microsoft.Resources/deployments', 'spokeAVNET')]",
+        "[resourceId('Microsoft.Resources/deployments', 'spokeBVMWindows')]",
         "[resourceId('Microsoft.Resources/deployments', 'spokeBVNET')]"
       ]
     },

@@ -143,13 +143,21 @@ module storageAccount 'modules/StorageAccount.bicep' = {
   name: 'storageAccount'
   params: {
     location: locationA
-    privateEndpoints_Blob_Name: '${storageAccount_Name}blob_pe'
+    privateEndpoints_Blob_Name: '${storageAccount_Name}_blob_pe'
     storageAccount_Name: storageAccount_Name
     privateEndpointSubnetID: spokeAVNET.outputs.privateEndpointSubnetID
     privateDNSZoneLinkedVnetIDList: [hubVNET.outputs.vnetID, spokeAVNET.outputs.vnetID, spokeBVNET.outputs.vnetID]
     privateDNSZoneLinkedVnetNamesList: [hubVNET.outputs.vnetName, spokeAVNET.outputs.vnetName, spokeBVNET.outputs.vnetName]
     privateEndpointVnetName: spokeAVNET.outputs.vnetName
   }
+  // Added this dependancy so that the VMs can reach out to my other Storage Account to download a file
+  // Since my other Storage Account has a private endpoint, the connectivity fails because I don't have an
+  //  entry in my Private DNS Zone for the other Storage Account.
+  dependsOn: [
+    hubVM_Windows
+    spokeAVM_Windows
+    spokeBVM_Windows
+  ]
 }
 
 module hubAzureFirewall 'modules/AzureFirewall.bicep' = {
