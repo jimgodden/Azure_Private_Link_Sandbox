@@ -1,11 +1,11 @@
 @description('Azure Datacenter location for the Hub and Spoke A resources')
 param locationA string = resourceGroup().location
 
-@description('''
-Azure Datacenter location for the Spoke B resources.  
-Use the same region as locationA if you do not want to test multi-region
-''')
-param locationB string
+// @description('''
+// Azure Datacenter location for the Spoke B resources.  
+// Use the same region as locationA if you do not want to test multi-region
+// ''')
+// param locationB string
 
 @description('Username for the admin account of the Virtual Machines')
 param vm_adminUsername string
@@ -47,7 +47,7 @@ module spokeAVNET './Modules/VirtualNetwork.bicep' = {
   params: {
     defaultNSG_Name: 'dstNSG'
     firstTwoOctetsOfVNETPrefix: '10.1'
-    location: locationB
+    location: locationA
     routeTable_Name: 'dstRT'
     vnet_Name: 'spokeAVNET'
   }
@@ -58,7 +58,7 @@ module spokeBVNET './Modules/VirtualNetwork.bicep' = {
   params: {
     defaultNSG_Name: 'spokeBNSG'
     firstTwoOctetsOfVNETPrefix: '10.2'
-    location: locationB
+    location: locationA
     routeTable_Name: 'spokeBRT'
     vnet_Name: 'spokeBVNET'
   }

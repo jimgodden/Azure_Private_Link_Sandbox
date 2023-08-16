@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "8215615651017222570"
+      "templateHash": "14482485788926804854"
     }
   },
   "parameters": {
@@ -14,12 +14,6 @@
       "defaultValue": "[resourceGroup().location]",
       "metadata": {
         "description": "Azure Datacenter location for the Hub and Spoke A resources"
-      }
-    },
-    "locationB": {
-      "type": "string",
-      "metadata": {
-        "description": "Azure Datacenter location for the Spoke B resources.  \r\nUse the same region as locationA if you do not want to test multi-region\r\n"
       }
     },
     "vm_adminUsername": {
@@ -375,7 +369,7 @@
             "value": "10.1"
           },
           "location": {
-            "value": "[parameters('locationB')]"
+            "value": "[parameters('locationA')]"
           },
           "routeTable_Name": {
             "value": "dstRT"
@@ -675,7 +669,7 @@
             "value": "10.2"
           },
           "location": {
-            "value": "[parameters('locationB')]"
+            "value": "[parameters('locationA')]"
           },
           "routeTable_Name": {
             "value": "spokeBRT"
