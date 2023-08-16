@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "14482485788926804854"
+      "templateHash": "2919290320839774670"
     }
   },
   "parameters": {
@@ -655,6 +655,66 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
+      "name": "hubToSpokeAPeering",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dstVNET_Name": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeAVNET'), '2022-09-01').outputs.vnetName.value]"
+          },
+          "originVNET_Name": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'hubVNET'), '2022-09-01').outputs.vnetName.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.18.4.5664",
+              "templateHash": "13647321007283693066"
+            }
+          },
+          "parameters": {
+            "originVNET_Name": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Source Virtual Network"
+              }
+            },
+            "dstVNET_Name": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Destination Virtual Network"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+              "apiVersion": "2022-09-01",
+              "name": "[format('{0}/{1}', parameters('originVNET_Name'), format('{0}to{1}', parameters('originVNET_Name'), parameters('dstVNET_Name')))]",
+              "properties": {
+                "remoteVirtualNetwork": {
+                  "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('dstVNET_Name'))]"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'hubVNET')]",
+        "[resourceId('Microsoft.Resources/deployments', 'spokeAVNET')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
       "name": "spokeBVNET",
       "properties": {
         "expressionEvaluationOptions": {
@@ -951,6 +1011,66 @@
           }
         }
       }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "hubToSpokeBPeering",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dstVNET_Name": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeBVNET'), '2022-09-01').outputs.vnetName.value]"
+          },
+          "originVNET_Name": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'hubVNET'), '2022-09-01').outputs.vnetName.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.18.4.5664",
+              "templateHash": "13647321007283693066"
+            }
+          },
+          "parameters": {
+            "originVNET_Name": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Source Virtual Network"
+              }
+            },
+            "dstVNET_Name": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Destination Virtual Network"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+              "apiVersion": "2022-09-01",
+              "name": "[format('{0}/{1}', parameters('originVNET_Name'), format('{0}to{1}', parameters('originVNET_Name'), parameters('dstVNET_Name')))]",
+              "properties": {
+                "remoteVirtualNetwork": {
+                  "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('dstVNET_Name'))]"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'hubVNET')]",
+        "[resourceId('Microsoft.Resources/deployments', 'spokeBVNET')]"
+      ]
     },
     {
       "type": "Microsoft.Resources/deployments",
@@ -1702,7 +1822,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "16300627008658450781"
+              "templateHash": "598393262969416957"
             }
           },
           "parameters": {
@@ -1858,15 +1978,22 @@
               "location": "global"
             },
             {
-              "condition": "[parameters('usingBlobPrivateEndpoints')]",
-              "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
-              "apiVersion": "2023-01-01",
-              "name": "[format('{0}/{1}', parameters('storageAccount_Name'), format('{0}.7990ee28-5dca-44ef-90ac-8fed57b789dd', parameters('storageAccount_Name')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2023-04-01",
+              "name": "[format('{0}/{1}', parameters('privateEndpoints_Blob_Name'), 'blobZoneGroup')]",
               "properties": {
-                "privateEndpoint": {}
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "default",
+                    "properties": {
+                      "privateDnsZoneId": "[resourceId('Microsoft.Network/privateDnsZones', variables('privateDNSZone_Blob_Name'))]"
+                    }
+                  }
+                ]
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccount_Name'))]"
+                "[resourceId('Microsoft.Network/privateDnsZones', variables('privateDNSZone_Blob_Name'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_Blob_Name'))]"
               ]
             },
             {

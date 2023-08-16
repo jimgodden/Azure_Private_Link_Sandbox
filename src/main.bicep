@@ -53,6 +53,14 @@ module spokeAVNET './Modules/VirtualNetwork.bicep' = {
   }
 }
 
+module hubToSpokeAPeering 'modules/VirtualNetworkPeering.bicep' = {
+  name: 'hubToSpokeAPeering'
+  params: {
+    dstVNET_Name: spokeAVNET.outputs.vnetName
+    originVNET_Name: hubVNET.outputs.vnetName
+  }
+}
+
 module spokeBVNET './Modules/VirtualNetwork.bicep' = {
   name: 'spokeBVNET'
   params: {
@@ -64,6 +72,13 @@ module spokeBVNET './Modules/VirtualNetwork.bicep' = {
   }
 }
 
+module hubToSpokeBPeering 'modules/VirtualNetworkPeering.bicep' = {
+  name: 'hubToSpokeBPeering'
+  params: {
+    dstVNET_Name: spokeBVNET.outputs.vnetName
+    originVNET_Name: hubVNET.outputs.vnetName
+  }
+}
 
 
 // Windows Virtual Machines

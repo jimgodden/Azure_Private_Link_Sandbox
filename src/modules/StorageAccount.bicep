@@ -147,14 +147,18 @@ resource privateDNSZone_StorageAccount_Blob 'Microsoft.Network/privateDnsZones@2
   location: 'global'
 }
 
-resource privateEndpointConnection 'Microsoft.Storage/storageAccounts/privateEndpointConnections@2023-01-01' = if (usingBlobPrivateEndpoints) {
-  parent: storageAccount
-  name: '${storageAccount_Name}.7990ee28-5dca-44ef-90ac-8fed57b789dd'
+resource privateDNSZone_StorageAccount_Blob_Group 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-04-01' = {
+  parent: privateEndpoints_Blob
+  name: 'blobZoneGroup'
   properties: {
-    privateEndpoint: {}
-    // privateLinkServiceConnectionState: {
-      
-    // }
+    privateDnsZoneConfigs: [
+      {
+        name: 'default'
+        properties: {
+           privateDnsZoneId: privateDNSZone_StorageAccount_Blob.id
+        }
+      }
+    ]
   }
 }
 
