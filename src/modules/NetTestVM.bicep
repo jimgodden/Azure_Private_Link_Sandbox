@@ -23,7 +23,7 @@ param accelNet bool
 
 param subnetID string
 
-param vm_ScriptFileUri string = 'https://raw.githubusercontent.com/jimgodden/Azure-Virtual-WAN-Sandbox/main/scripts/InitScript.ps1'
+param vm_ScriptFileUri string = 'https://mainjamesgstorage.blob.core.windows.net/scripts/InitScript.ps1'
 
 
 

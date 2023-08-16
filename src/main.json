@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "10796112297607097176"
+      "templateHash": "18298688742740897173"
     }
   },
   "parameters": {
@@ -1114,7 +1114,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "3095963472179591918"
+              "templateHash": "17656567703793400280"
             }
           },
           "parameters": {
@@ -1162,7 +1162,7 @@
             },
             "vm_ScriptFileUri": {
               "type": "string",
-              "defaultValue": "https://raw.githubusercontent.com/jimgodden/Azure-Virtual-WAN-Sandbox/main/scripts/InitScript.ps1"
+              "defaultValue": "https://mainjamesgstorage.blob.core.windows.net/scripts/InitScript.ps1"
             }
           },
           "resources": [
@@ -1362,7 +1362,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "3095963472179591918"
+              "templateHash": "17656567703793400280"
             }
           },
           "parameters": {
@@ -1410,7 +1410,7 @@
             },
             "vm_ScriptFileUri": {
               "type": "string",
-              "defaultValue": "https://raw.githubusercontent.com/jimgodden/Azure-Virtual-WAN-Sandbox/main/scripts/InitScript.ps1"
+              "defaultValue": "https://mainjamesgstorage.blob.core.windows.net/scripts/InitScript.ps1"
             }
           },
           "resources": [
@@ -1610,7 +1610,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "3095963472179591918"
+              "templateHash": "17656567703793400280"
             }
           },
           "parameters": {
@@ -1658,7 +1658,7 @@
             },
             "vm_ScriptFileUri": {
               "type": "string",
-              "defaultValue": "https://raw.githubusercontent.com/jimgodden/Azure-Virtual-WAN-Sandbox/main/scripts/InitScript.ps1"
+              "defaultValue": "https://mainjamesgstorage.blob.core.windows.net/scripts/InitScript.ps1"
             }
           },
           "resources": [
