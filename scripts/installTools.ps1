@@ -15,3 +15,15 @@ Add-AppxPackage "c:\Microsoft.WindowsTerminal_Win10_1.16.10261.0_8wekyb3d8bbwe.m
 $DesktopFilePath = "C:\Users\$ENV:USERNAME\Desktop\"
 Set-Shortcut -ApplicationFilePath "C:\Program Files\Wireshark\Wireshark.exe"  -DestinationFilePath "${DesktopFilePath}Wireshark.lnk"
 
+function Set-Shortcut {
+    param (
+        [Parameter(Mandatory)]
+        [string]$ApplicationFilePath,
+        [Parameter(Mandatory)]
+        [string]$DestinationFilePath
+    )
+    $WScriptObj = New-Object -ComObject ("WScript.Shell")
+    $shortcut = $WscriptObj.CreateShortcut($DestinationFilePath)
+    $shortcut.TargetPath = $ApplicationFilePath
+    $shortcut.Save()
+}

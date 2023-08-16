@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "16971918041597227882"
+      "templateHash": "3868014878663258275"
     }
   },
   "parameters": {
@@ -85,7 +85,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "15998159750100732463"
+              "templateHash": "3516955611599141152"
             }
           },
           "parameters": {
@@ -209,6 +209,20 @@
               "metadata": {
                 "description": "Address Prefix of the PrivateEndpoint Subnet"
               }
+            },
+            "subnet_PrivateLinkService_Name": {
+              "type": "string",
+              "defaultValue": "PrivateLinkService",
+              "metadata": {
+                "description": "Name of the PrivateEndpoint Subnet"
+              }
+            },
+            "subnet_PrivateLinkService_AddressPrefix": {
+              "type": "string",
+              "defaultValue": "[format('{0}.6.0/24', parameters('firstTwoOctetsOfVNETPrefix'))]",
+              "metadata": {
+                "description": "Address Prefix of the PrivateEndpoint Subnet"
+              }
             }
           },
           "resources": [
@@ -289,6 +303,21 @@
                       "privateEndpointNetworkPolicies": "Disabled",
                       "privateLinkServiceNetworkPolicies": "Enabled"
                     }
+                  },
+                  {
+                    "name": "[parameters('subnet_PrivateLinkService_Name')]",
+                    "properties": {
+                      "addressPrefix": "[parameters('subnet_PrivateLinkService_AddressPrefix')]",
+                      "networkSecurityGroup": {
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('defaultNSG_Name'))]"
+                      },
+                      "routeTable": {
+                        "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTable_Name'))]"
+                      },
+                      "delegations": [],
+                      "privateEndpointNetworkPolicies": "Disabled",
+                      "privateLinkServiceNetworkPolicies": "Disabled"
+                    }
                   }
                 ],
                 "enableDdosProtection": false
@@ -339,6 +368,10 @@
             "privateEndpointSubnetID": {
               "type": "string",
               "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnet_Name')), '2022-09-01').subnets[5].id]"
+            },
+            "privateLinkServiceSubnetID": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnet_Name')), '2022-09-01').subnets[6].id]"
             },
             "vnetName": {
               "type": "string",
@@ -385,7 +418,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "15998159750100732463"
+              "templateHash": "3516955611599141152"
             }
           },
           "parameters": {
@@ -509,6 +542,20 @@
               "metadata": {
                 "description": "Address Prefix of the PrivateEndpoint Subnet"
               }
+            },
+            "subnet_PrivateLinkService_Name": {
+              "type": "string",
+              "defaultValue": "PrivateLinkService",
+              "metadata": {
+                "description": "Name of the PrivateEndpoint Subnet"
+              }
+            },
+            "subnet_PrivateLinkService_AddressPrefix": {
+              "type": "string",
+              "defaultValue": "[format('{0}.6.0/24', parameters('firstTwoOctetsOfVNETPrefix'))]",
+              "metadata": {
+                "description": "Address Prefix of the PrivateEndpoint Subnet"
+              }
             }
           },
           "resources": [
@@ -589,6 +636,21 @@
                       "privateEndpointNetworkPolicies": "Disabled",
                       "privateLinkServiceNetworkPolicies": "Enabled"
                     }
+                  },
+                  {
+                    "name": "[parameters('subnet_PrivateLinkService_Name')]",
+                    "properties": {
+                      "addressPrefix": "[parameters('subnet_PrivateLinkService_AddressPrefix')]",
+                      "networkSecurityGroup": {
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('defaultNSG_Name'))]"
+                      },
+                      "routeTable": {
+                        "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTable_Name'))]"
+                      },
+                      "delegations": [],
+                      "privateEndpointNetworkPolicies": "Disabled",
+                      "privateLinkServiceNetworkPolicies": "Disabled"
+                    }
                   }
                 ],
                 "enableDdosProtection": false
@@ -639,6 +701,10 @@
             "privateEndpointSubnetID": {
               "type": "string",
               "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnet_Name')), '2022-09-01').subnets[5].id]"
+            },
+            "privateLinkServiceSubnetID": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnet_Name')), '2022-09-01').subnets[6].id]"
             },
             "vnetName": {
               "type": "string",
@@ -745,7 +811,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "15998159750100732463"
+              "templateHash": "3516955611599141152"
             }
           },
           "parameters": {
@@ -869,6 +935,20 @@
               "metadata": {
                 "description": "Address Prefix of the PrivateEndpoint Subnet"
               }
+            },
+            "subnet_PrivateLinkService_Name": {
+              "type": "string",
+              "defaultValue": "PrivateLinkService",
+              "metadata": {
+                "description": "Name of the PrivateEndpoint Subnet"
+              }
+            },
+            "subnet_PrivateLinkService_AddressPrefix": {
+              "type": "string",
+              "defaultValue": "[format('{0}.6.0/24', parameters('firstTwoOctetsOfVNETPrefix'))]",
+              "metadata": {
+                "description": "Address Prefix of the PrivateEndpoint Subnet"
+              }
             }
           },
           "resources": [
@@ -949,6 +1029,21 @@
                       "privateEndpointNetworkPolicies": "Disabled",
                       "privateLinkServiceNetworkPolicies": "Enabled"
                     }
+                  },
+                  {
+                    "name": "[parameters('subnet_PrivateLinkService_Name')]",
+                    "properties": {
+                      "addressPrefix": "[parameters('subnet_PrivateLinkService_AddressPrefix')]",
+                      "networkSecurityGroup": {
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('defaultNSG_Name'))]"
+                      },
+                      "routeTable": {
+                        "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTable_Name'))]"
+                      },
+                      "delegations": [],
+                      "privateEndpointNetworkPolicies": "Disabled",
+                      "privateLinkServiceNetworkPolicies": "Disabled"
+                    }
                   }
                 ],
                 "enableDdosProtection": false
@@ -999,6 +1094,10 @@
             "privateEndpointSubnetID": {
               "type": "string",
               "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnet_Name')), '2022-09-01').subnets[5].id]"
+            },
+            "privateLinkServiceSubnetID": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnet_Name')), '2022-09-01').subnets[6].id]"
             },
             "vnetName": {
               "type": "string",
@@ -1833,7 +1932,7 @@
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeAVNET'), '2022-09-01').outputs.privateEndpointSubnetID.value]"
           },
           "privateLink_SubnetID": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeBVNET'), '2022-09-01').outputs.generalSubnetID.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeBVNET'), '2022-09-01').outputs.privateLinkServiceSubnetID.value]"
           },
           "slb_SubnetID": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeBVNET'), '2022-09-01').outputs.generalSubnetID.value]"
@@ -1852,7 +1951,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "17192329638609745692"
+              "templateHash": "15507080834114153296"
             }
           },
           "parameters": {
@@ -1899,6 +1998,7 @@
               "type": "Microsoft.Network/networkInterfaces",
               "apiVersion": "2023-04-01",
               "name": "[parameters('virtualMachineNIC_Name')]",
+              "location": "[parameters('location')]",
               "properties": {
                 "ipConfigurations": [
                   {

@@ -32,6 +32,7 @@ param tcpPort int = 443
 // Modifies the existing Virtual Machine NIC to add it to the backend pool of the Load Balancer behind the Private Link Service
 resource virtualMachineNIC 'Microsoft.Network/networkInterfaces@2023-04-01' = {
   name: virtualMachineNIC_Name
+  location: location
   properties: {
     ipConfigurations: [
       {

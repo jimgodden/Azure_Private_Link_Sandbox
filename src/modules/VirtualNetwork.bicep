@@ -52,6 +52,12 @@ param subnet_PrivateEndpoints_Name string = 'PrivateEndpoints'
 @description('Address Prefix of the PrivateEndpoint Subnet')
 param subnet_PrivateEndpoints_AddressPrefix string = '${firstTwoOctetsOfVNETPrefix}.5.0/24'
 
+@description('Name of the PrivateEndpoint Subnet')
+param subnet_PrivateLinkService_Name string = 'PrivateLinkService'
+
+@description('Address Prefix of the PrivateEndpoint Subnet')
+param subnet_PrivateLinkService_AddressPrefix string = '${firstTwoOctetsOfVNETPrefix}.6.0/24'
+
 resource vnet 'Microsoft.Network/virtualNetworks@2022-09-01' = {
   name: vnet_Name
   location: location
@@ -128,6 +134,21 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-09-01' = {
           privateLinkServiceNetworkPolicies: 'Enabled'
         }
       }
+      {
+        name: subnet_PrivateLinkService_Name
+        properties: {
+          addressPrefix: subnet_PrivateLinkService_AddressPrefix
+          networkSecurityGroup: {
+            id: nsg.id
+          }
+          routeTable: {
+            id: routeTable.id
+          }
+          delegations: []
+          privateEndpointNetworkPolicies: 'Disabled'
+          privateLinkServiceNetworkPolicies: 'Disabled' // This has to be disabled for Private Link Service to be used in the subnet
+        }
+      }
     ]
     enableDdosProtection: false
   }
@@ -174,6 +195,8 @@ output azfwManagementSubnetID string = vnet.properties.subnets[2].id
 output bastionSubnetID string = vnet.properties.subnets[3].id
 output generalSubnetID string = vnet.properties.subnets[4].id
 output privateEndpointSubnetID string = vnet.properties.subnets[5].id
+output privateLinkServiceSubnetID string = vnet.properties.subnets[6].id
+
 
 output vnetName string = vnet.name
 output vnetID string = vnet.id

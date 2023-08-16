@@ -132,7 +132,7 @@ module privateLink 'modules/PrivateLink.bicep' = {
   params: {
     location: locationA
     privateEndpoint_SubnetID: spokeAVNET.outputs.privateEndpointSubnetID
-    privateLink_SubnetID: spokeBVNET.outputs.generalSubnetID
+    privateLink_SubnetID: spokeBVNET.outputs.privateLinkServiceSubnetID
     slb_SubnetID: spokeBVNET.outputs.generalSubnetID
     virtualMachineNIC_Name: spokeBVM_Windows.outputs.nicName
     virtualMachineNIC_IPConfig_Name: spokeBVM_Windows.outputs.nicIPConfig0Name
