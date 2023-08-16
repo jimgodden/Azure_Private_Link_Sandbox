@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "1055367901678581166"
+      "templateHash": "11066708650144871945"
     }
   },
   "parameters": {
@@ -1833,7 +1833,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "9228013858722101367"
+              "templateHash": "10656498720244262616"
             }
           },
           "parameters": {
@@ -2012,17 +2012,17 @@
             {
               "copy": {
                 "name": "virtualNetworkLink",
-                "count": "[length(range(0, sub(length(parameters('privateDNSZoneLinkedVnetIDList')), 1)))]"
+                "count": "[length(range(0, length(parameters('privateDNSZoneLinkedVnetIDList'))))]"
               },
               "condition": "[parameters('usingBlobPrivateEndpoints')]",
               "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
               "apiVersion": "2018-09-01",
-              "name": "[format('{0}/{1}', variables('privateDNSZone_Blob_Name'), format('{0}_to_{1}', variables('privateDNSZone_Blob_Name'), parameters('privateDNSZoneLinkedVnetNamesList')[range(0, sub(length(parameters('privateDNSZoneLinkedVnetIDList')), 1))[copyIndex()]]))]",
+              "name": "[format('{0}/{1}', variables('privateDNSZone_Blob_Name'), format('{0}_to_{1}', variables('privateDNSZone_Blob_Name'), parameters('privateDNSZoneLinkedVnetNamesList')[range(0, length(parameters('privateDNSZoneLinkedVnetIDList')))[copyIndex()]]))]",
               "location": "global",
               "properties": {
                 "registrationEnabled": false,
                 "virtualNetwork": {
-                  "id": "[parameters('privateDNSZoneLinkedVnetIDList')[range(0, sub(length(parameters('privateDNSZoneLinkedVnetIDList')), 1))[copyIndex()]]]"
+                  "id": "[parameters('privateDNSZoneLinkedVnetIDList')[range(0, length(parameters('privateDNSZoneLinkedVnetIDList')))[copyIndex()]]]"
                 }
               },
               "dependsOn": [

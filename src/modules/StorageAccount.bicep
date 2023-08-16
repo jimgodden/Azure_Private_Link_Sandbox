@@ -163,7 +163,7 @@ resource privateDNSZone_StorageAccount_Blob_Group 'Microsoft.Network/privateEndp
   }
 }
 
-resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = [ for i in range(0, length(privateDNSZoneLinkedVnetIDList) - 1): if (usingBlobPrivateEndpoints) {
+resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = [ for i in range(0, length(privateDNSZoneLinkedVnetIDList)): if (usingBlobPrivateEndpoints) {
   parent: privateDNSZone_StorageAccount_Blob
   name: '${privateDNSZone_Blob_Name}_to_${privateDNSZoneLinkedVnetNamesList[i]}'
   location: 'global'
