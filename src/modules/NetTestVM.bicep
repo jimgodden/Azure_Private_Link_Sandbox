@@ -153,3 +153,7 @@ resource vm_CustomScriptExtension 'Microsoft.Compute/virtualMachines/extensions@
     }
   }
 }
+
+
+output nicName string = nic.name
+output nicIPConfig0Name string = nic.properties.ipConfigurations[0].name

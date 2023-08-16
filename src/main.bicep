@@ -127,6 +127,18 @@ module spokeBVM_Windows './Modules/NetTestVM.bicep' = {
   }
 }
 
+module privateLink 'modules/PrivateLink.bicep' = {
+  name: 'privateLink'
+  params: {
+    location: locationA
+    privateEndpoint_SubnetID: spokeAVNET.outputs.privateEndpointSubnetID
+    privateLink_SubnetID: spokeBVNET.outputs.generalSubnetID
+    slb_SubnetID: spokeBVNET.outputs.generalSubnetID
+    virtualMachineNIC_Name: spokeBVM_Windows.outputs.nicName
+    virtualMachineNIC_IPConfig_Name: spokeBVM_Windows.outputs.nicIPConfig0Name
+  }
+}
+
 module storageAccount 'modules/StorageAccount.bicep' = {
   name: 'storageAccount'
   params: {
@@ -137,6 +149,18 @@ module storageAccount 'modules/StorageAccount.bicep' = {
     privateDNSZoneLinkedVnetIDList: [hubVNET.outputs.vnetID, spokeAVNET.outputs.vnetID, spokeBVNET.outputs.vnetID]
     privateDNSZoneLinkedVnetNamesList: [hubVNET.outputs.vnetName, spokeAVNET.outputs.vnetName, spokeBVNET.outputs.vnetName]
     privateEndpointVnetName: spokeAVNET.outputs.vnetName
+  }
+}
+
+module hubAzureFirewall 'modules/AzureFirewall.bicep' = {
+  name: 'hubAzureFirewall'
+  params: {
+    AzFW_Name: 'hubAzFW'
+    AzFW_SKU: 'Basic'
+    azfwManagementSubnetID: hubVNET.outputs.azfwManagementSubnetID
+    AzFWPolicy_Name: 'hubAzFW_Policy'
+    azfwSubnetID: hubVNET.outputs.azfwSubnetID
+    location: locationA
   }
 }
 
