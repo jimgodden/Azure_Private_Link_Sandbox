@@ -47,7 +47,7 @@ param subnet_General_Name string = 'General'
 param subnet_General_AddressPrefix string = '${firstTwoOctetsOfVNETPrefix}.4.0/24'
 
 @description('Name of the PrivateEndpoint Subnet')
-param subnet_PrivateEndpoints_Name string = 'General'
+param subnet_PrivateEndpoints_Name string = 'PrivateEndpoints'
 
 @description('Address Prefix of the PrivateEndpoint Subnet')
 param subnet_PrivateEndpoints_AddressPrefix string = '${firstTwoOctetsOfVNETPrefix}.5.0/24'
