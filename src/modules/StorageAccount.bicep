@@ -1,9 +1,11 @@
 @description('Azure Datacenter that the resource is deployed to')
 param location string
 
-param vnetName string
+param privateEndpointVnetName string
 
-param vnetID string
+param privateDNSZoneLinkedVnetNamesList array
+
+param privateDNSZoneLinkedVnetIDList array
 
 param subnetID string
 
@@ -37,7 +39,6 @@ var blobEndpoint = storageAccount.properties.primaryEndpoints.blob
 var blobEndpointNoHTTPS = substring(blobEndpoint, 7, 8)
 var blobFQDN = take(blobEndpointNoHTTPS, length(blobEndpointNoHTTPS) - 1)
 
-var virtualNetworkLink_Name = '${privateDNSZone_Blob_Name}_to_${vnetName}'
 
 var privateDNSZone_Blob_Name = 'privatelink.blob.core.windows.net'
 var privateDNSZone_File_Name = 'privatelink.file.core.windows.net'
@@ -117,7 +118,7 @@ resource privateEndpoints_Blob 'Microsoft.Network/privateEndpoints@2023-04-01' =
   properties: {
     privateLinkServiceConnections: [
       {
-        name: '${privateEndpoints_Blob_Name}_in_${vnetName}_to_${storageAccount_Name}'
+        name: '${privateEndpoints_Blob_Name}_in_${privateEndpointVnetName}_to_${storageAccount_Name}'
         properties: {
           privateLinkServiceId: storageAccount.id
           groupIds: [
@@ -162,17 +163,17 @@ resource privateDNSZone_StorageAccount_Blob_Group 'Microsoft.Network/privateEndp
   }
 }
 
-resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = if (usingBlobPrivateEndpoints) {
+resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = [ for i in range(0, length(privateDNSZoneLinkedVnetIDList) - 1): if (usingBlobPrivateEndpoints) {
   parent: privateDNSZone_StorageAccount_Blob
-  name: virtualNetworkLink_Name
+  name: '${privateDNSZone_Blob_Name}_to_${privateDNSZoneLinkedVnetNamesList[i]}'
   location: 'global'
   properties: {
     registrationEnabled: false
     virtualNetwork: {
-      id: vnetID
+      id: privateDNSZoneLinkedVnetIDList[i]
     }
   }
-}
+}]
 
 // resource privateDNSZoneRecord_StorageAccount_Blob 'Microsoft.Network/privateDnsZones/A@2018-09-01' = {
 //   parent: privateDNSZone_StorageAccount_Blob

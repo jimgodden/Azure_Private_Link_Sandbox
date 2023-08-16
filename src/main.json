@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "2919290320839774670"
+      "templateHash": "1055367901678581166"
     }
   },
   "parameters": {
@@ -1808,10 +1808,21 @@
           "subnetID": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeAVNET'), '2022-09-01').outputs.privateEndpointSubnetID.value]"
           },
-          "vnetID": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeAVNET'), '2022-09-01').outputs.vnetID.value]"
+          "privateDNSZoneLinkedVnetIDList": {
+            "value": [
+              "[reference(resourceId('Microsoft.Resources/deployments', 'hubVNET'), '2022-09-01').outputs.vnetID.value]",
+              "[reference(resourceId('Microsoft.Resources/deployments', 'spokeAVNET'), '2022-09-01').outputs.vnetID.value]",
+              "[reference(resourceId('Microsoft.Resources/deployments', 'spokeBVNET'), '2022-09-01').outputs.vnetID.value]"
+            ]
           },
-          "vnetName": {
+          "privateDNSZoneLinkedVnetNamesList": {
+            "value": [
+              "[reference(resourceId('Microsoft.Resources/deployments', 'hubVNET'), '2022-09-01').outputs.vnetName.value]",
+              "[reference(resourceId('Microsoft.Resources/deployments', 'spokeAVNET'), '2022-09-01').outputs.vnetName.value]",
+              "[reference(resourceId('Microsoft.Resources/deployments', 'spokeBVNET'), '2022-09-01').outputs.vnetName.value]"
+            ]
+          },
+          "privateEndpointVnetName": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeAVNET'), '2022-09-01').outputs.vnetName.value]"
           }
         },
@@ -1822,7 +1833,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "598393262969416957"
+              "templateHash": "9228013858722101367"
             }
           },
           "parameters": {
@@ -1832,11 +1843,14 @@
                 "description": "Azure Datacenter that the resource is deployed to"
               }
             },
-            "vnetName": {
+            "privateEndpointVnetName": {
               "type": "string"
             },
-            "vnetID": {
-              "type": "string"
+            "privateDNSZoneLinkedVnetNamesList": {
+              "type": "array"
+            },
+            "privateDNSZoneLinkedVnetIDList": {
+              "type": "array"
             },
             "subnetID": {
               "type": "string"
@@ -1862,7 +1876,6 @@
             }
           },
           "variables": {
-            "virtualNetworkLink_Name": "[format('{0}_to_{1}', variables('privateDNSZone_Blob_Name'), parameters('vnetName'))]",
             "privateDNSZone_Blob_Name": "privatelink.blob.core.windows.net",
             "privateDNSZone_File_Name": "privatelink.file.core.windows.net"
           },
@@ -1946,7 +1959,7 @@
               "properties": {
                 "privateLinkServiceConnections": [
                   {
-                    "name": "[format('{0}_in_{1}_to_{2}', parameters('privateEndpoints_Blob_Name'), parameters('vnetName'), parameters('storageAccount_Name'))]",
+                    "name": "[format('{0}_in_{1}_to_{2}', parameters('privateEndpoints_Blob_Name'), parameters('privateEndpointVnetName'), parameters('storageAccount_Name'))]",
                     "properties": {
                       "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccount_Name'))]",
                       "groupIds": [
@@ -1997,15 +2010,19 @@
               ]
             },
             {
+              "copy": {
+                "name": "virtualNetworkLink",
+                "count": "[length(range(0, sub(length(parameters('privateDNSZoneLinkedVnetIDList')), 1)))]"
+              },
               "condition": "[parameters('usingBlobPrivateEndpoints')]",
               "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
               "apiVersion": "2018-09-01",
-              "name": "[format('{0}/{1}', variables('privateDNSZone_Blob_Name'), variables('virtualNetworkLink_Name'))]",
+              "name": "[format('{0}/{1}', variables('privateDNSZone_Blob_Name'), format('{0}_to_{1}', variables('privateDNSZone_Blob_Name'), parameters('privateDNSZoneLinkedVnetNamesList')[range(0, sub(length(parameters('privateDNSZoneLinkedVnetIDList')), 1))[copyIndex()]]))]",
               "location": "global",
               "properties": {
                 "registrationEnabled": false,
                 "virtualNetwork": {
-                  "id": "[parameters('vnetID')]"
+                  "id": "[parameters('privateDNSZoneLinkedVnetIDList')[range(0, sub(length(parameters('privateDNSZoneLinkedVnetIDList')), 1))[copyIndex()]]]"
                 }
               },
               "dependsOn": [
@@ -2016,7 +2033,9 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'spokeAVNET')]"
+        "[resourceId('Microsoft.Resources/deployments', 'hubVNET')]",
+        "[resourceId('Microsoft.Resources/deployments', 'spokeAVNET')]",
+        "[resourceId('Microsoft.Resources/deployments', 'spokeBVNET')]"
       ]
     },
     {
