@@ -23,7 +23,7 @@ resource vnet_peering_origin_to_dst 'Microsoft.Network/virtualNetworks/virtualNe
 }
 
 resource vnet_peering_dst_to_origin 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2022-09-01' = {
-  parent: originVNET
+  parent: dstVNET
   name: '${dstVNET_Name}to${originVNET_Name}'
   properties: {
     remoteVirtualNetwork: {

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "7383509942574894802"
+      "version": "0.20.4.51522",
+      "templateHash": "3590652891806522064"
     }
   },
   "parameters": {
@@ -44,8 +44,8 @@
     },
     "storageAccount_Name": {
       "type": "string",
-      "maxLength": 24,
       "minLength": 3,
+      "maxLength": 24,
       "metadata": {
         "description": "Storage account name restrictions:\r\n- Storage account names must be between 3 and 24 characters in length and may contain numbers and lowercase letters only.\r\n- Your storage account name must be unique within Azure. No two storage accounts can have the same name.\r\n"
       }
@@ -91,8 +91,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "3516955611599141152"
+              "version": "0.20.4.51522",
+              "templateHash": "1047171013375504310"
             }
           },
           "parameters": {
@@ -424,8 +424,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "3516955611599141152"
+              "version": "0.20.4.51522",
+              "templateHash": "1047171013375504310"
             }
           },
           "parameters": {
@@ -748,8 +748,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "15712327465290943019"
+              "version": "0.20.4.51522",
+              "templateHash": "5217390852003124922"
             }
           },
           "parameters": {
@@ -780,7 +780,7 @@
             {
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
               "apiVersion": "2022-09-01",
-              "name": "[format('{0}/{1}', parameters('originVNET_Name'), format('{0}to{1}', parameters('dstVNET_Name'), parameters('originVNET_Name')))]",
+              "name": "[format('{0}/{1}', parameters('dstVNET_Name'), format('{0}to{1}', parameters('dstVNET_Name'), parameters('originVNET_Name')))]",
               "properties": {
                 "remoteVirtualNetwork": {
                   "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('originVNET_Name'))]"
@@ -827,8 +827,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "3516955611599141152"
+              "version": "0.20.4.51522",
+              "templateHash": "1047171013375504310"
             }
           },
           "parameters": {
@@ -1151,8 +1151,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "15712327465290943019"
+              "version": "0.20.4.51522",
+              "templateHash": "5217390852003124922"
             }
           },
           "parameters": {
@@ -1183,7 +1183,7 @@
             {
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
               "apiVersion": "2022-09-01",
-              "name": "[format('{0}/{1}', parameters('originVNET_Name'), format('{0}to{1}', parameters('dstVNET_Name'), parameters('originVNET_Name')))]",
+              "name": "[format('{0}/{1}', parameters('dstVNET_Name'), format('{0}to{1}', parameters('dstVNET_Name'), parameters('originVNET_Name')))]",
               "properties": {
                 "remoteVirtualNetwork": {
                   "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('originVNET_Name'))]"
@@ -1239,8 +1239,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "17656567703793400280"
+              "version": "0.20.4.51522",
+              "templateHash": "9881291639543717324"
             }
           },
           "parameters": {
@@ -1487,8 +1487,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "17656567703793400280"
+              "version": "0.20.4.51522",
+              "templateHash": "9881291639543717324"
             }
           },
           "parameters": {
@@ -1735,8 +1735,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "17656567703793400280"
+              "version": "0.20.4.51522",
+              "templateHash": "9881291639543717324"
             }
           },
           "parameters": {
@@ -1980,8 +1980,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "6231389118880990555"
+              "version": "0.20.4.51522",
+              "templateHash": "6913987572615069038"
             }
           },
           "parameters": {
@@ -2260,8 +2260,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "13215889794683877641"
+              "version": "0.20.4.51522",
+              "templateHash": "14205758381061548768"
             }
           },
           "parameters": {
@@ -2288,8 +2288,8 @@
             },
             "storageAccount_Name": {
               "type": "string",
-              "maxLength": 24,
               "minLength": 3,
+              "maxLength": 24,
               "metadata": {
                 "description": "Storage account name restrictions:\r\n- Storage account names must be between 3 and 24 characters in length and may contain numbers and lowercase letters only.\r\n- Your storage account name must be unique within Azure. No two storage accounts can have the same name.\r\n"
               }
@@ -2503,8 +2503,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "2152012819422161035"
+              "version": "0.20.4.51522",
+              "templateHash": "15661070663856114587"
             }
           },
           "parameters": {
@@ -2669,8 +2669,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "10733409533458567780"
+              "version": "0.20.4.51522",
+              "templateHash": "8746232211187990806"
             }
           },
           "parameters": {
