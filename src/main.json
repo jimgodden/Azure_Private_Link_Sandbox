@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "3868014878663258275"
+      "templateHash": "7069786448182321716"
     }
   },
   "parameters": {
@@ -1940,6 +1940,9 @@
           "virtualMachineNIC_Name": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeBVMWindows'), '2022-09-01').outputs.nicName.value]"
           },
+          "virtualMachineNIC_SubnetID": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeBVNET'), '2022-09-01').outputs.generalSubnetID.value]"
+          },
           "virtualMachineNIC_IPConfig_Name": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'spokeBVMWindows'), '2022-09-01').outputs.nicIPConfig0Name.value]"
           }
@@ -1951,7 +1954,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "15507080834114153296"
+              "templateHash": "14082844680147148818"
             }
           },
           "parameters": {
@@ -1985,6 +1988,9 @@
             "virtualMachineNIC_Name": {
               "type": "string"
             },
+            "virtualMachineNIC_SubnetID": {
+              "type": "string"
+            },
             "virtualMachineNIC_IPConfig_Name": {
               "type": "string"
             },
@@ -2004,6 +2010,9 @@
                   {
                     "name": "[parameters('virtualMachineNIC_IPConfig_Name')]",
                     "properties": {
+                      "subnet": {
+                        "id": "[parameters('virtualMachineNIC_SubnetID')]"
+                      },
                       "loadBalancerBackendAddressPools": [
                         {
                           "id": "[reference(resourceId('Microsoft.Network/loadBalancers', parameters('slb_Name')), '2022-09-01').backendAddressPools[0].id]"

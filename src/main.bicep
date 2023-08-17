@@ -29,9 +29,11 @@ Storage account name restrictions:
 @maxLength(24)
 param storageAccount_Name string
 
+@description('Set this to true if you want to use an Azure Firewall in the Hub Virtual Network.')
+param usingAzureFirewall bool = true
 
 
-module hubVNET './Modules/VirtualNetwork.bicep' = {
+module hubVNET './Modules/Network/VirtualNetwork.bicep' = {
   name: 'hubVNET'
   params: {
     defaultNSG_Name: 'hubNSG'
@@ -42,7 +44,7 @@ module hubVNET './Modules/VirtualNetwork.bicep' = {
   }
 }
 
-module spokeAVNET './Modules/VirtualNetwork.bicep' = {
+module spokeAVNET './Modules/Network/VirtualNetwork.bicep' = {
   name: 'spokeAVNET'
   params: {
     defaultNSG_Name: 'dstNSG'
@@ -53,7 +55,7 @@ module spokeAVNET './Modules/VirtualNetwork.bicep' = {
   }
 }
 
-module hubToSpokeAPeering 'modules/VirtualNetworkPeering.bicep' = {
+module hubToSpokeAPeering 'modules/Network/VirtualNetworkPeering.bicep' = {
   name: 'hubToSpokeAPeering'
   params: {
     dstVNET_Name: spokeAVNET.outputs.vnetName
@@ -61,7 +63,7 @@ module hubToSpokeAPeering 'modules/VirtualNetworkPeering.bicep' = {
   }
 }
 
-module spokeBVNET './Modules/VirtualNetwork.bicep' = {
+module spokeBVNET './Modules/Network/VirtualNetwork.bicep' = {
   name: 'spokeBVNET'
   params: {
     defaultNSG_Name: 'spokeBNSG'
@@ -72,7 +74,7 @@ module spokeBVNET './Modules/VirtualNetwork.bicep' = {
   }
 }
 
-module hubToSpokeBPeering 'modules/VirtualNetworkPeering.bicep' = {
+module hubToSpokeBPeering 'modules/Network/VirtualNetworkPeering.bicep' = {
   name: 'hubToSpokeBPeering'
   params: {
     dstVNET_Name: spokeBVNET.outputs.vnetName
@@ -82,7 +84,7 @@ module hubToSpokeBPeering 'modules/VirtualNetworkPeering.bicep' = {
 
 
 // Windows Virtual Machines
-module hubVM_Windows './Modules/NetTestVM.bicep' = {
+module hubVM_Windows './Modules/Compute/NetTestVM.bicep' = {
   name: 'hubVMWindows'
   params: {
     accelNet: accelNet
@@ -97,7 +99,7 @@ module hubVM_Windows './Modules/NetTestVM.bicep' = {
 }
 
 // Windows Virtual Machines
-module spokeAVM_Windows './Modules/NetTestVM.bicep' = {
+module spokeAVM_Windows './Modules/Compute/NetTestVM.bicep' = {
   name: 'spokeAVMWindows'
   params: {
     accelNet: accelNet
@@ -112,7 +114,7 @@ module spokeAVM_Windows './Modules/NetTestVM.bicep' = {
 }
 
 // Windows Virtual Machines
-module spokeBVM_Windows './Modules/NetTestVM.bicep' = {
+module spokeBVM_Windows './Modules/Compute/NetTestVM.bicep' = {
   name: 'spokeBVMWindows'
   params: {
     accelNet: accelNet
@@ -127,7 +129,7 @@ module spokeBVM_Windows './Modules/NetTestVM.bicep' = {
   }
 }
 
-module privateLink 'modules/PrivateLink.bicep' = {
+module privateLink 'modules/Network/PrivateLink.bicep' = {
   name: 'privateLink'
   params: {
     location: locationA
@@ -135,11 +137,12 @@ module privateLink 'modules/PrivateLink.bicep' = {
     privateLink_SubnetID: spokeBVNET.outputs.privateLinkServiceSubnetID
     slb_SubnetID: spokeBVNET.outputs.generalSubnetID
     virtualMachineNIC_Name: spokeBVM_Windows.outputs.nicName
+    virtualMachineNIC_SubnetID: spokeBVNET.outputs.generalSubnetID
     virtualMachineNIC_IPConfig_Name: spokeBVM_Windows.outputs.nicIPConfig0Name
   }
 }
 
-module storageAccount 'modules/StorageAccount.bicep' = {
+module storageAccount 'modules/Storage/StorageAccount.bicep' = {
   name: 'storageAccount'
   params: {
     location: locationA
@@ -160,7 +163,7 @@ module storageAccount 'modules/StorageAccount.bicep' = {
   ]
 }
 
-module hubAzureFirewall 'modules/AzureFirewall.bicep' = {
+module hubAzureFirewall 'modules/Network/AzureFirewall.bicep' = if (usingAzureFirewall) {
   name: 'hubAzureFirewall'
   params: {
     AzFW_Name: 'hubAzFW'
@@ -172,7 +175,7 @@ module hubAzureFirewall 'modules/AzureFirewall.bicep' = {
   }
 }
 
-module hubBastion 'modules/Bastion.bicep' = {
+module hubBastion 'modules/Network/Bastion.bicep' = {
   name: 'hubBastion'
   params: {
     bastionSubnetID: hubVNET.outputs.bastionSubnetID

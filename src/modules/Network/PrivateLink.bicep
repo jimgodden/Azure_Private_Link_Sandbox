@@ -1,32 +1,34 @@
 @description('Azure Datacenter that the resource is deployed to')
 param location string
 
-
+@description('Name of the Azure Load Balancer')
 param slb_Name string = 'slb'
 
-
+@description('Subnet ID that the Load Balancer will be deployed to')
 param slb_SubnetID string
 
-
+@description('Name of the Private Endpoint')
 param privateEndpoint_name string = 'pe_to_pl'
 
-
+@description('Subnet ID that the Private Endpoint will be deployed to')
 param privateEndpoint_SubnetID string
 
-
+@description('Name of the Private Link Service')
 param privateLink_Name string = 'pl'
 
-
+@description('Subnet ID that the Private Link Service will be deployed to')
 param privateLink_SubnetID string
 
+@description('Name of the NIC of the Virtual Machine that will be put behind the Private Link Service and Load Balancer')
 param virtualMachineNIC_Name string
 
+@description('Subnet ID of the NIC of the Virtual Machine that will be put behind the Private Link Service and Load Balancer')
+param virtualMachineNIC_SubnetID string
 
-
+@description('Name of the ipconfig of the NIC of the Virtual Machine that will be put behind the Private Link Service and Load Balancer')
 param virtualMachineNIC_IPConfig_Name string
 
-
-
+@description('TCP Port that will be used for connecting to the Virtual Machine behind the Private Link Service and Load Balancer')
 param tcpPort int = 443
 
 // Modifies the existing Virtual Machine NIC to add it to the backend pool of the Load Balancer behind the Private Link Service
@@ -38,6 +40,9 @@ resource virtualMachineNIC 'Microsoft.Network/networkInterfaces@2023-04-01' = {
       {
         name: virtualMachineNIC_IPConfig_Name
         properties: {
+          subnet: {
+            id: virtualMachineNIC_SubnetID
+          }
           loadBalancerBackendAddressPools: [
             {
               id: slb.properties.backendAddressPools[0].id
