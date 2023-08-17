@@ -15,10 +15,13 @@ param vm_adminUsername string
 param vm_adminPassword string
 
 @description('Password for the Virtual Machine Admin User')
-param vmSize string = 'Standard_D2s_v3' // 'Standard_D16lds_v5'
+param vmSize string = 'Standard_B2ms' // 'Standard_D2s_v3' // 'Standard_D16lds_v5'
 
-@description('True enables Accelerated Networking and False disabled it.  Not all VM sizes support Accel Net')
-param accelNet bool = true
+@description('''True enables Accelerated Networking and False disabled it.  
+Not all VM sizes support Accel Net (i.e. Standard_B2ms).  
+I'd recommend Standard_D2s_v3 for a cheap VM that supports Accel Net.
+''')
+param accelNet bool = false
 
 @description('''
 Storage account name restrictions:
