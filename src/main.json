@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "7069786448182321716"
+      "templateHash": "6029683390683754926"
     }
   },
   "parameters": {
@@ -30,16 +30,16 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v3",
+      "defaultValue": "Standard_B2ms",
       "metadata": {
         "description": "Password for the Virtual Machine Admin User"
       }
     },
     "accelNet": {
       "type": "bool",
-      "defaultValue": true,
+      "defaultValue": false,
       "metadata": {
-        "description": "True enables Accelerated Networking and False disabled it.  Not all VM sizes support Accel Net"
+        "description": "True enables Accelerated Networking and False disabled it.  \r\nNot all VM sizes support Accel Net (i.e. Standard_B2ms).  \r\nI'd recommend Standard_D2s_v3 for a cheap VM that supports Accel Net.\r\n"
       }
     },
     "storageAccount_Name": {
@@ -48,6 +48,13 @@
       "minLength": 3,
       "metadata": {
         "description": "Storage account name restrictions:\r\n- Storage account names must be between 3 and 24 characters in length and may contain numbers and lowercase letters only.\r\n- Your storage account name must be unique within Azure. No two storage accounts can have the same name.\r\n"
+      }
+    },
+    "usingAzureFirewall": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Set this to true if you want to use an Azure Firewall in the Hub Virtual Network."
       }
     }
   },
@@ -1954,7 +1961,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "14082844680147148818"
+              "templateHash": "6231389118880990555"
             }
           },
           "parameters": {
@@ -1966,37 +1973,67 @@
             },
             "slb_Name": {
               "type": "string",
-              "defaultValue": "slb"
+              "defaultValue": "slb",
+              "metadata": {
+                "description": "Name of the Azure Load Balancer"
+              }
             },
             "slb_SubnetID": {
-              "type": "string"
+              "type": "string",
+              "metadata": {
+                "description": "Subnet ID that the Load Balancer will be deployed to"
+              }
             },
             "privateEndpoint_name": {
               "type": "string",
-              "defaultValue": "pe_to_pl"
+              "defaultValue": "pe_to_pl",
+              "metadata": {
+                "description": "Name of the Private Endpoint"
+              }
             },
             "privateEndpoint_SubnetID": {
-              "type": "string"
+              "type": "string",
+              "metadata": {
+                "description": "Subnet ID that the Private Endpoint will be deployed to"
+              }
             },
             "privateLink_Name": {
               "type": "string",
-              "defaultValue": "pl"
+              "defaultValue": "pl",
+              "metadata": {
+                "description": "Name of the Private Link Service"
+              }
             },
             "privateLink_SubnetID": {
-              "type": "string"
+              "type": "string",
+              "metadata": {
+                "description": "Subnet ID that the Private Link Service will be deployed to"
+              }
             },
             "virtualMachineNIC_Name": {
-              "type": "string"
+              "type": "string",
+              "metadata": {
+                "description": "Name of the NIC of the Virtual Machine that will be put behind the Private Link Service and Load Balancer"
+              }
             },
             "virtualMachineNIC_SubnetID": {
-              "type": "string"
+              "type": "string",
+              "metadata": {
+                "description": "Subnet ID of the NIC of the Virtual Machine that will be put behind the Private Link Service and Load Balancer"
+              }
             },
             "virtualMachineNIC_IPConfig_Name": {
-              "type": "string"
+              "type": "string",
+              "metadata": {
+                "description": "Name of the ipconfig of the NIC of the Virtual Machine that will be put behind the Private Link Service and Load Balancer"
+              }
             },
             "tcpPort": {
               "type": "int",
-              "defaultValue": 443
+              "defaultValue": 443,
+              "metadata": {
+                "description": "TCP Port that will be used for connecting to the Virtual Machine behind the Private Link Service and Load Balancer"
+              }
             }
           },
           "resources": [
@@ -2411,6 +2448,7 @@
       ]
     },
     {
+      "condition": "[parameters('usingAzureFirewall')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "hubAzureFirewall",
