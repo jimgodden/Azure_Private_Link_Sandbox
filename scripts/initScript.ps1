@@ -7,7 +7,6 @@ choco install powershell-core -y
 choco install python311 -y
 choco install vscode -y
 choco install wireshark -y
-Set-Shortcut -ApplicationFilePath "C:\Program Files\Wireshark\Wireshark.exe"  -DestinationFilePath "${DesktopFilePath}Wireshark.lnk"
 choco install pstools -y
 choco install iperf3 -y
 

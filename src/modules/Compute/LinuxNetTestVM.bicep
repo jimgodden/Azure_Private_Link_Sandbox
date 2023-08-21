@@ -65,9 +65,6 @@ resource linuxVM 'Microsoft.Compute/virtualMachines@2023-03-01' = {
         name: '${vm_Name}_OsDisk_1'
         createOption: 'FromImage'
         caching: 'ReadWrite'
-        // managedDisk: {
-        //   id: '/subscriptions/a2c8e9b2-b8d3-4f38-8a72-642d0012c518/resourceGroups/MAIN/providers/Microsoft.Compute/disks/Main-Ubn22-1-A_disk1_723e72ad87ce4572a075d5bbd7134aa1'
-        // }
         deleteOption: 'Delete'
       }
       dataDisks: []
@@ -78,14 +75,6 @@ resource linuxVM 'Microsoft.Compute/virtualMachines@2023-03-01' = {
       adminPassword: vm_AdminPassword
       linuxConfiguration: {
         disablePasswordAuthentication: false
-        // ssh: {
-        //   publicKeys: [
-        //     {
-        //       path: '/home/jamesgodden/.ssh/authorized_keys'
-        //       keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCe3LKU0hlW3S7giqGJgyn7fKZMHD8ZcJUpSY6UFmbZpxCh190EwLiyGboE9r9Kavi/VJsSg7BXZCCN2MYeDBHGfKkIKCxCZs+50rBz8d2KFiMh1OstdW61rYkAKOKbOB1ElaCP1CvxJ+6JQIjxJaCKIO3zUGYid/sPZonQCXTQ4NFljRsrZeq42SAmT+fOEGDI/apaQ9aFiJsYPRM620f4QESJmx7QE8w29MmUnWaqGnmfVHkRcCMIPAn8Plr0zg9SxIb/E5/yTUEbJpfvG36H7sxT3/DIGMVV6PAxjk4yzXuXZiJ1Xteri2Bfz0bgBwomSM5OCjhc0GT/4jd6ubj66q4DTqtPOcHfiQp9cfMhi8wgw8ksBo2jBJWpDMeAI5R7SXkAbIhu4+L0dP4AtfWOxj1Ap8gWjgSEE6ObcMfJJ7fSB+GNmFN+SCLT3+n3bjY2AfCOLMcOGo/qQ204HjLLDWj+r7y3p8M5iejIEXdrnFo4PJmmOGGp/ZP+Nt1eWlU= generated-by-azure'
-        //     }
-        //   ]
-        // }
         provisionVMAgent: true
         patchSettings: {
           patchMode: 'ImageDefault'

@@ -122,7 +122,6 @@ module spokeBVM_Windows './Modules/Compute/NetTestVM.bicep' = {
   params: {
     accelNet: accelNet
     location: locationA
-
     nic_Name: 'spokeBNICWindows'
     subnetID: spokeBVNET.outputs.generalSubnetID
     vm_AdminPassword: vm_adminPassword
