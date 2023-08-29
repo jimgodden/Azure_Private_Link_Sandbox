@@ -1,11 +1,5 @@
 @description('Azure Datacenter location for the Hub and Spoke A resources')
-param locationA string = resourceGroup().location
-
-// @description('''
-// Azure Datacenter location for the Spoke B resources.  
-// Use the same region as locationA if you do not want to test multi-region
-// ''')
-// param locationB string
+param location string = resourceGroup().location
 
 @description('Username for the admin account of the Virtual Machines')
 param vm_adminUsername string
@@ -41,7 +35,7 @@ module hubVNET './Modules/Network/VirtualNetwork.bicep' = {
   params: {
     defaultNSG_Name: 'hubNSG'
     firstTwoOctetsOfVNETPrefix: '10.0'
-    location: locationA
+    location: location
     routeTable_Name: 'hubRT'
     vnet_Name: 'hubVNET'
   }
@@ -52,7 +46,7 @@ module spokeAVNET './Modules/Network/VirtualNetwork.bicep' = {
   params: {
     defaultNSG_Name: 'dstNSG'
     firstTwoOctetsOfVNETPrefix: '10.1'
-    location: locationA
+    location: location
     routeTable_Name: 'dstRT'
     vnet_Name: 'spokeAVNET'
   }
@@ -71,7 +65,7 @@ module spokeBVNET './Modules/Network/VirtualNetwork.bicep' = {
   params: {
     defaultNSG_Name: 'spokeBNSG'
     firstTwoOctetsOfVNETPrefix: '10.2'
-    location: locationA
+    location: location
     routeTable_Name: 'spokeBRT'
     vnet_Name: 'spokeBVNET'
   }
@@ -91,7 +85,7 @@ module hubVM_Windows './Modules/Compute/NetTestVM.bicep' = {
   name: 'hubVMWindows'
   params: {
     accelNet: accelNet
-    location: locationA
+    location: location
     nic_Name: 'hubNICWindows'
     subnetID: hubVNET.outputs.generalSubnetID
     vm_AdminPassword: vm_adminPassword
@@ -106,7 +100,7 @@ module spokeAVM_Windows './Modules/Compute/NetTestVM.bicep' = {
   name: 'spokeAVMWindows'
   params: {
     accelNet: accelNet
-    location: locationA
+    location: location
     nic_Name: 'spokeANICWindows'
     subnetID: spokeAVNET.outputs.generalSubnetID
     vm_AdminPassword: vm_adminPassword
@@ -121,7 +115,7 @@ module spokeBVM_Windows './Modules/Compute/NetTestVM.bicep' = {
   name: 'spokeBVMWindows'
   params: {
     accelNet: accelNet
-    location: locationA
+    location: location
     nic_Name: 'spokeBNICWindows'
     subnetID: spokeBVNET.outputs.generalSubnetID
     vm_AdminPassword: vm_adminPassword
@@ -134,7 +128,7 @@ module spokeBVM_Windows './Modules/Compute/NetTestVM.bicep' = {
 module privateLink 'modules/Network/PrivateLink.bicep' = {
   name: 'privateLink'
   params: {
-    location: locationA
+    location: location
     privateEndpoint_SubnetID: hubVNET.outputs.privateEndpointSubnetID
     privateLink_SubnetID: spokeBVNET.outputs.privateLinkServiceSubnetID
     slb_SubnetID: spokeBVNET.outputs.generalSubnetID
@@ -147,7 +141,7 @@ module privateLink 'modules/Network/PrivateLink.bicep' = {
 module storageAccount 'modules/Storage/StorageAccount.bicep' = {
   name: 'storageAccount'
   params: {
-    location: locationA
+    location: location
     privateEndpoints_Blob_Name: '${storageAccount_Name}_blob_pe'
     storageAccount_Name: storageAccount_Name
     privateEndpointSubnetID: spokeAVNET.outputs.privateEndpointSubnetID
@@ -173,7 +167,7 @@ module hubAzureFirewall 'modules/Network/AzureFirewall.bicep' = if (usingAzureFi
     azfwManagementSubnetID: hubVNET.outputs.azfwManagementSubnetID
     AzFWPolicy_Name: 'hubAzFW_Policy'
     azfwSubnetID: hubVNET.outputs.azfwSubnetID
-    location: locationA
+    location: location
   }
 }
 
@@ -181,6 +175,6 @@ module hubBastion 'modules/Network/Bastion.bicep' = {
   name: 'hubBastion'
   params: {
     bastionSubnetID: hubVNET.outputs.bastionSubnetID
-    location: locationA
+    location: location
   }
 }
