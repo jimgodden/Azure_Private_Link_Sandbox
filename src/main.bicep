@@ -1,4 +1,4 @@
-@description('Azure Datacenter location for the Hub and Spoke A resources')
+@description('Azure Datacenter location for all resources to be deployed')
 param location string = resourceGroup().location
 
 @description('Username for the admin account of the Virtual Machines')
@@ -8,7 +8,7 @@ param vm_adminUsername string
 @secure()
 param vm_adminPassword string
 
-@description('Password for the Virtual Machine Admin User')
+@description('Size of the Virtual Machines')
 param vmSize string = 'Standard_B2ms' // 'Standard_D2s_v3' // 'Standard_D16lds_v5'
 
 @description('''True enables Accelerated Networking and False disabled it.  
