@@ -5,11 +5,11 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "1048305528463372294"
+      "templateHash": "14031133808776776878"
     }
   },
   "parameters": {
-    "locationA": {
+    "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
       "metadata": {
@@ -76,7 +76,7 @@
             "value": "10.0"
           },
           "location": {
-            "value": "[parameters('locationA')]"
+            "value": "[parameters('location')]"
           },
           "routeTable_Name": {
             "value": "hubRT"
@@ -409,7 +409,7 @@
             "value": "10.1"
           },
           "location": {
-            "value": "[parameters('locationA')]"
+            "value": "[parameters('location')]"
           },
           "routeTable_Name": {
             "value": "dstRT"
@@ -812,7 +812,7 @@
             "value": "10.2"
           },
           "location": {
-            "value": "[parameters('locationA')]"
+            "value": "[parameters('location')]"
           },
           "routeTable_Name": {
             "value": "spokeBRT"
@@ -1212,7 +1212,7 @@
             "value": "[parameters('accelNet')]"
           },
           "location": {
-            "value": "[parameters('locationA')]"
+            "value": "[parameters('location')]"
           },
           "nic_Name": {
             "value": "hubNICWindows"
@@ -1460,7 +1460,7 @@
             "value": "[parameters('accelNet')]"
           },
           "location": {
-            "value": "[parameters('locationA')]"
+            "value": "[parameters('location')]"
           },
           "nic_Name": {
             "value": "spokeANICWindows"
@@ -1708,7 +1708,7 @@
             "value": "[parameters('accelNet')]"
           },
           "location": {
-            "value": "[parameters('locationA')]"
+            "value": "[parameters('location')]"
           },
           "nic_Name": {
             "value": "spokeBNICWindows"
@@ -1953,7 +1953,7 @@
         "mode": "Incremental",
         "parameters": {
           "location": {
-            "value": "[parameters('locationA')]"
+            "value": "[parameters('location')]"
           },
           "privateEndpoint_SubnetID": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'hubVNET'), '2022-09-01').outputs.privateEndpointSubnetID.value]"
@@ -2225,7 +2225,7 @@
         "mode": "Incremental",
         "parameters": {
           "location": {
-            "value": "[parameters('locationA')]"
+            "value": "[parameters('location')]"
           },
           "privateEndpoints_Blob_Name": {
             "value": "[format('{0}_blob_pe', parameters('storageAccount_Name'))]"
@@ -2494,7 +2494,7 @@
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'hubVNET'), '2022-09-01').outputs.azfwSubnetID.value]"
           },
           "location": {
-            "value": "[parameters('locationA')]"
+            "value": "[parameters('location')]"
           }
         },
         "template": {
@@ -2660,7 +2660,7 @@
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'hubVNET'), '2022-09-01').outputs.bastionSubnetID.value]"
           },
           "location": {
-            "value": "[parameters('locationA')]"
+            "value": "[parameters('location')]"
           }
         },
         "template": {
